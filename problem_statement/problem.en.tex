@@ -15,29 +15,106 @@
 
 \begin{document}
 
-\problemname{Title of the Problem Here}
+\problemname{The Bathroom Job}
 
-% Example use of the \illustration command
-% \illustration{0.3}{filename.jpg}{Photo by \href{url_here}{link text here, e.g. author name}}
+Michael Corleone is having dinner at a restaurant with two dangerous rivals.
+Before the meeting, his allies secretly hid a gun in the restaurant's bathroom.
+Michael must slip away from the table and reach the bathroom without being spotted by the security guards.
 
-Put the problem story here. Here are some common issues to keep in mind as you edit:
+The restaurant is heavily monitored.
+The guards do not stand still: each one walks the same short patrol over and over, and sees along every straight corridor until a wall gets in the way.
+A corridor that is safe at one moment can be deadly a moment later, so Michael must time every step, and sometimes the best move is to wait.
 
+\paragraph{The restaurant.}
+The restaurant is a grid with $R$ rows and $C$ columns.
+Rows are numbered $1$ to $R$ from top to bottom, and columns are numbered $1$ to $C$ from left to right.
+Each cell is one of the following:
 \begin{itemize}
-    \item Use \LaTeX{} math mode for (most) numbers. The few exceptions are for years (e.g., 2019) or whenever a number is part of a string token.
-    \item For numbers $1\,000$ or larger, use thousands separator \verb|\,|. So, for example, one million would be $1\,000\,000$.
-    \item Write in active voice (i.e., avoid passive voice).
-    \item Write in present tense (avoid the word \texttt{will}, especially in the input description). For example, prefer: ``Input starts with an integer $n$ followed by $n$ lines...'' rather than ``Input \emph{will} start with an integer $n$, then \emph{will} come $n$ lines...''.
+    \item \texttt{.}\ an empty floor cell,
+    \item \texttt{\#}\ a wall,
+    \item \texttt{S}\ the cell where Michael starts (exactly one such cell),
+    \item \texttt{B}\ the bathroom (exactly one such cell).
 \end{itemize}
+
+\paragraph{Michael.}
+Time starts at $t = 0$, and Michael stands on the cell \texttt{S}.
+In each time step, Michael does exactly one of the following: he moves to one of the four adjacent cells (up, down, left, or right), or he waits in his current cell.
+Every action takes exactly one unit of time.
+Michael never enters a wall and never leaves the grid.
+
+\paragraph{The guards.}
+There are $G$ guards, and every guard follows a patrol of length $T$.
+A patrol is described by the guard's starting cell and a string $s$ of $T$ characters, each one of \texttt{U}, \texttt{D}, \texttt{L}, \texttt{R}, or \texttt{S}, meaning up, down, left, right, and stay in place.
+At time $t = 0$, the guard stands on its starting cell.
+For every $t \ge 0$, during the step from time $t$ to time $t+1$, the guard performs the action $s_{(t \bmod T) + 1}$.
+After $T$ actions, every guard is back on its starting cell, so the guard's position at time $t$ only depends on $t \bmod T$.
+Guards never leave the grid and never enter a wall.
+Several guards may share a cell, and a guard may stand on \texttt{S} or on \texttt{B}.
+
+\paragraph{Vision.}
+At every time $t$, a guard sees its own cell and the cells in each of the four straight lines (up, down, left, right) starting at the guard, continuing until the line reaches a wall or the edge of the grid.
+Only walls block vision; other guards, \texttt{S}, and \texttt{B} do not.
+A cell is \emph{watched} at time $t$ if at least one guard sees it at time $t$.
+All guards move simultaneously.
+
+\paragraph{Detection.}
+Michael is detected if, at some integer time $t \ge 0$ (including $t = 0$), the cell he occupies is watched at time $t$.
+Only integer times matter: if Michael and a guard swap cells during one time step, nothing happens as long as the cells they end up on are not watched.
+Michael wins at the first time he stands on \texttt{B} without being detected.
+If \texttt{B} is watched at the moment he arrives, he is detected.
+
+\illustration{0.8}{cycle}{The watched cells (shaded) in Sample Input 1 at times $t \equiv 0, 1, 2, 3 \pmod 4$. Guards are marked \texttt{G}. The wall next to the upper guard blocks its vision to the right, so \texttt{S} stays safe.}
+
+Determine the minimum number of time steps Michael needs to reach the bathroom without being detected.
 
 \section*{Input}
 
-Put the input format (syntax) description here, including constraints on all input values. That includes number ranges, the maximum number of digits after the decimal point for real values, the character sets and length ranges for strings, etc. If possible, always give a count of the number of items that follow (test cases, e.g.) rather than delimiting with a token or EOF. The input format should be fairly precise, so that the reader knows exactly what to expect (it should usually be easy to write a program to read the input using line-oriented or token-oriented parsing).
+The first line contains four integers $R$, $C$, $T$, and $G$ ($1 \le R, C \le 100$, $R \cdot C \ge 2$, $1 \le T \le 100$, $0 \le G \le 100$): the number of rows, the number of columns, the length of the patrol cycle, and the number of guards.
+
+Each of the next $R$ lines contains a string of $C$ characters from \texttt{.}, \texttt{\#}, \texttt{S}, and \texttt{B}, describing one row of the restaurant from left to right.
+The grid contains exactly one \texttt{S} and exactly one \texttt{B}.
+
+Each of the next $G$ lines describes one guard and contains two integers $r$ and $c$ ($1 \le r \le R$, $1 \le c \le C$) followed by a string $s$ of length exactly $T$ consisting of the characters \texttt{U}, \texttt{D}, \texttt{L}, \texttt{R}, and \texttt{S}.
+The cell $(r, c)$ is the starting cell of the guard, and $s$ is its patrol.
+The patrol keeps the guard inside the grid and off all walls, and after the $T$ actions of $s$ the guard is back on $(r, c)$.
 
 \section*{Output}
 
-Describe the output. Kattis output judging is not sensitive to case changes or space changes (including line formatting and blank lines). Try to maintain this flexibility with your problem—do not be overly precise or prescriptive here in the output formatting description. However, if exact textual matching or floating-point precision is required, do specify the constraints (e.g., ``your answer should be correct within a relative or absolute error of $10^{-3}$'').
+Output the minimum number of time steps Michael needs to stand on the bathroom without being detected.
+If this is impossible, including when Michael is already watched at time $0$, output \texttt{CAUGHT}.
 
-\section*{Sample Input 1	Sample Output 1}
-Please provide at least one sample Input and Output for your problem.
+\section*{Sample Input 1}
+\begin{verbatim}
+5 7 4 2
+.......
+.....#S
+.......
+##.....
+....B.#
+5 4 ULRD
+2 5 LRLR
+\end{verbatim}
+
+\section*{Sample Output 1}
+\begin{verbatim}
+7
+\end{verbatim}
+
+One optimal plan is: wait, down, left, down, down, wait, left.
+Michael waits twice because the cells he needs are watched at the moments he would otherwise arrive.
+
+\section*{Sample Input 2}
+\begin{verbatim}
+1 3 2 1
+S.B
+1 3 LR
+\end{verbatim}
+
+\section*{Sample Output 2}
+\begin{verbatim}
+CAUGHT
+\end{verbatim}
+
+The guard stands in the same row as Michael at time $0$ with no wall between them, so he is detected immediately.
 
 \end{document}
