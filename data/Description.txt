@@ -1,10 +1,43 @@
-Sample data will be taken from `./sample/'.  All pairs of matching
-(.in, .ans) files there will be used as sample data, in alphabetical
-order by file name.  This data will be displayed in the problem
-statement.
+Test case descriptions for The Bathroom Job
+Generator: test_case_generator/generator.py
+Random seed: 3212026
 
-Secret test data will be taken from `./secret/'. All pairs of matching
-(.in, .ans) files there will be used to test each
-submission. Optionally a text file (with filename extension .txt)
-describing the purpose of an input file may be present. For each .txt
-file there must be a matching (.in,.ans) pair.
+sample/sample01.in -> sample/sample01.ans | Official sample 1: moving guards, blocked sight lines and an optimal route of 7 steps. | Answer: 7
+sample/sample02.in -> sample/sample02.ans | Official sample 2: Michael is watched at time 0; expected CAUGHT. | Answer: CAUGHT
+sample/sample03.in -> sample/sample03.ans | Extra sample: no guards but a wall detour; basic shortest path. | Answer: 7
+secret/secret01.in -> secret/secret01.ans | Minimum valid grid; no guards; direct adjacent destination. | Answer: 1
+secret/secret02.in -> secret/secret02.ans | Single-column grid with maximum cycle length, zero guards. | Answer: 1
+secret/secret03.in -> secret/secret03.ans | Stationary guard watches the entire row at time zero. | Answer: CAUGHT
+secret/secret04.in -> secret/secret04.ans | Disconnected components separated by walls; unreachable with G=0. | Answer: CAUGHT
+secret/secret05.in -> secret/secret05.ans | Long wall detour on a small grid; no guards. | Answer: 8
+secret/secret06.in -> secret/secret06.ans | Impossible: S and B are permanently separated. | Answer: CAUGHT
+secret/secret07.in -> secret/secret07.ans | Line-of-sight blocked by walls and isolated paths. | Answer: CAUGHT
+secret/secret08.in -> secret/secret08.ans | T=1; stationary guard, watches row and column behind walls. | Answer: CAUGHT
+secret/secret09.in -> secret/secret09.ans | No safe way past a guard sharing the sole corridor. | Answer: CAUGHT
+secret/secret10.in -> secret/secret10.ans | Guard vision on disconnected branch; walls block sight. | Answer: CAUGHT
+secret/secret11.in -> secret/secret11.ans | Tiny open grid, no guards. | Answer: 2
+secret/secret12.in -> secret/secret12.ans | Small moving-guard random case with odd patrol length. | Answer: CAUGHT
+secret/secret13.in -> secret/secret13.ans | Dense walls and guards, possible unreachable states. | Answer: CAUGHT
+secret/secret14.in -> secret/secret14.ans | Open-medium grid with multiple moving patrols. | Answer: CAUGHT
+secret/secret15.in -> secret/secret15.ans | Medium no-guard maze with many dead ends. | Answer: CAUGHT
+secret/secret16.in -> secret/secret16.ans | Moderately large, mostly open surveillance network. | Answer: CAUGHT
+secret/secret17.in -> secret/secret17.ans | Heavy walls with overlapping and isolated patrols. | Answer: CAUGHT
+secret/secret18.in -> secret/secret18.ans | Rectangular grid, long cyclic dynamics. | Answer: 78
+secret/secret19.in -> secret/secret19.ans | Large grid, no guards; basic pathfinding under constraints. | Answer: 118
+secret/secret20.in -> secret/secret20.ans | Large random walls and many patrols. | Answer: 101
+secret/secret21.in -> secret/secret21.ans | Maximal dimensions and T, no guards, long shortest path. | Answer: 198
+secret/secret22.in -> secret/secret22.ans | All parameters at maximum; dense moving-guard visibility. | Answer: CAUGHT
+secret/secret23.in -> secret/secret23.ans | Max dimensions/guards with stationary vision and many wall partitions. | Answer: CAUGHT
+secret/secret24.in -> secret/secret24.ans | Single long row and maximal T; no patrols. | Answer: 99
+secret/secret25.in -> secret/secret25.ans | Single long column and maximal T; no patrols. | Answer: 99
+secret/secret26.in -> secret/secret26.ans | Large patrol period and wall-heavy scenario. | Answer: CAUGHT
+secret/secret27.in -> secret/secret27.ans | Odd T near maximum; mixed moving and stationary guards. | Answer: 81
+secret/secret28.in -> secret/secret28.ans | Largest open grid, sparse guards, shortest path with periodic visibility. | Answer: CAUGHT
+secret/secret29.in -> secret/secret29.ans | Long serpentine corridor forces thousands of steps; tests BFS queue behavior. | Answer: 4998
+secret/secret30.in -> secret/secret30.ans | Guard patrol behind a wall; timed visibility and alternative route checks. | Answer: CAUGHT
+secret/secret31.in -> secret/secret31.ans | Timing trap #1: spatial shortest path 10 steps, actual safe minimum 11. | Answer: 11
+secret/secret32.in -> secret/secret32.ans | Timing trap #2: spatial shortest path 10 steps, actual safe minimum 12. | Answer: 12
+secret/secret33.in -> secret/secret33.ans | Timing trap #3: spatial shortest path 10 steps, actual safe minimum 13. | Answer: 13
+secret/secret34.in -> secret/secret34.ans | Timing trap #4: spatial shortest path 10 steps, actual safe minimum 11. | Answer: 11
+secret/secret35.in -> secret/secret35.ans | Timing trap #5: spatial shortest path 10 steps, actual safe minimum 12. | Answer: 12
+secret/secret36.in -> secret/secret36.ans | Timing trap #6: spatial shortest path 10 steps, actual safe minimum 12. | Answer: 12
