@@ -30,7 +30,7 @@ def main():
     grid = [input().strip() for _ in range(R)]
     
 
-    # Locate Dante's start and the bathroom.
+    # Locate Michael's start and the bathroom.
     start_r = start_c = bath_r = bath_c = -1
     for i in range(R):
         for j in range(C):
@@ -61,7 +61,7 @@ def main():
                     nr += dr
                     nc += dc
 
-    # Dante is already detected at time 0.
+    # Michael is already detected at time 0.
     if watched[0][start_r][start_c]:
         print("CAUGHT")
         return
@@ -71,7 +71,7 @@ def main():
     visited = [[row[:] for row in layer] for layer in watched]
     visited[0][start_r][start_c] = True
 
-    # Dante can wait or move in one of the four directions.
+    # Michael can wait or move in one of the four directions.
     actions = ((0, 0), (-1, 0), (1, 0), (0, -1), (0, 1))
 
     frontier = [(start_r, start_c)]        # cells reached at the current level
