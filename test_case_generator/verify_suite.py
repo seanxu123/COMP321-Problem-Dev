@@ -2,13 +2,20 @@
 """Verify test-file naming, input validity, patrol closures, answers and sample data.
 
 Usage: python3 test_case_generator/verify_suite.py
-This is independent of the team's future input validator (Deliverable 2.7).
+Every input must pass input_format_validators/validate.py (exit code 42).
 """
 from pathlib import Path
 from generator import solve, MOVES
 from collections import deque
+import subprocess
+import sys
 
 ROOT=Path(__file__).resolve().parent.parent
+VALIDATOR=ROOT/'input_format_validators'/'validate.py'
+
+def check_input(path):
+    with path.open('rb') as f:
+        assert subprocess.run([sys.executable,VALIDATOR],stdin=f).returncode==42, path
 
 def parse(text):
     lines = text.splitlines()
@@ -19,29 +26,6 @@ def parse(text):
         r, c, path = line.split()
         guards.append((int(r)-1, int(c)-1, path))
     return R, C, T, grid, guards
-
-def check_input(text):
-    lines=text.splitlines()
-    assert lines
-    first=lines[0].split()
-    assert len(first)==4
-    R,C,T,G=map(int,first)
-    assert 1<=R<=100 and 1<=C<=100 and R*C>=2 and 1<=T<=100 and 0<=G<=100
-    assert len(lines)==1+R+G
-    grid=lines[1:1+R]
-    assert all(len(s)==C and set(s)<=set('.#SB') for s in grid)
-    assert ''.join(grid).count('S')==1 and ''.join(grid).count('B')==1
-    for line in lines[1+R:]:
-        parts=line.split();assert len(parts)==3
-        r,c=map(int,parts[:2]);patrol=parts[2]
-        assert 1<=r<=R and 1<=c<=C and len(patrol)==T and set(patrol)<=set(MOVES)
-        r0,c0=r,c
-        assert grid[r-1][c-1]!='#'
-        for ch in patrol:
-            dr,dc=MOVES[ch]
-            r+=dr;c+=dc
-            assert 1<=r<=R and 1<=c<=C and grid[r-1][c-1]!='#'
-        assert (r,c)==(r0,c0)
 
 def independent_solve(text):
     """Slow direct-ray implementation for small cases; structurally different from oracle."""
@@ -82,7 +66,7 @@ def main():
         assert [p.stem for p in ins]==[p.stem for p in ans]
         assert len(ins)>=(3 if folder=='sample' else 20)
         for inputfile in ins:
-            text=inputfile.read_text('ascii');check_input(text)
+            text=inputfile.read_text('ascii');check_input(inputfile)
             answer=(directory/(inputfile.stem+'.ans')).read_text('ascii').strip()
             assert answer==solve(text), inputfile
             independent=independent_solve(text)
